@@ -25,10 +25,10 @@ export const fetchPosts = () => dispatch => {
   dispatch(fetchPostsIsLoading(true));
   fetch('https://jsonplaceholder.typicode.com/posts')
     .then(res => {
-      // if (!res.ok) {
-      //   dispatch(fetchPostsIsLoading(false));
-      //   throw new Error(res.statusText);
-      // }
+      if (!res.ok) {
+        dispatch(fetchPostsIsLoading(false));
+        throw new Error(res.statusText);
+      }
       dispatch(fetchPostsIsLoading(false));
       return res;
     })
