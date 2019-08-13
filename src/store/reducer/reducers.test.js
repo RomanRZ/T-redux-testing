@@ -1,8 +1,4 @@
-import {
-  FETCH_POSTS_SUCCESS,
-  FETCH_POSTS_ERROR,
-  POSTS_IS_LOADING
-} from "../types/types";
+import { FETCH_POSTS_SUCCESS, FETCH_POSTS_ERROR, POSTS_IS_LOADING } from "../types/types";
 
 import { fetchPostsReducer } from "./reducers";
 
@@ -10,7 +6,8 @@ describe("Testing reducers", () => {
   it("POSTS_IS_LOADING", () => {
     const stateBefore = { posts: [], isLoading: false, error: null };
     const action = {
-      type: POSTS_IS_LOADING
+      type: POSTS_IS_LOADING,
+      payload: true
     };
 
     expect(fetchPostsReducer(stateBefore, action)).toEqual({
@@ -20,15 +17,14 @@ describe("Testing reducers", () => {
   });
 
   it("FETCH_POSTS_SUCCESS", () => {
-    const stateBefore = { posts: [], isLoading: true, error: null };
+    const stateBefore = { posts: [], isLoading: false, error: null };
     const action = {
       type: FETCH_POSTS_SUCCESS,
       payload: [
         {
           userId: 1,
           id: 1,
-          title:
-            "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+          title: "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
           body:
             "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
         },
@@ -50,19 +46,18 @@ describe("Testing reducers", () => {
     };
     expect(fetchPostsReducer(stateBefore, action)).toEqual({
       ...stateBefore,
-      isLoading: false,
+
       posts: action.payload
     });
   });
 
   it("FETCH_POSTS_ERROR", () => {
-    const stateBefore = { posts: [], isLoading: true, error: null };
+    const stateBefore = { posts: [], isLoading: false, error: null };
     const action = { type: FETCH_POSTS_ERROR, payload: "Error 500" };
 
     expect(fetchPostsReducer(stateBefore, action)).toEqual({
       ...stateBefore,
-      error: action.payload,
-      isLoading: false
+      error: action.payload
     });
   });
 });

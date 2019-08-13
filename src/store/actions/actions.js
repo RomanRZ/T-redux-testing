@@ -1,12 +1,9 @@
-import {
-  FETCH_POSTS_SUCCESS,
-  FETCH_POSTS_ERROR,
-  POSTS_IS_LOADING
-} from '../types/types';
+import { FETCH_POSTS_SUCCESS, FETCH_POSTS_ERROR, POSTS_IS_LOADING } from "../types/types";
 
-export const fetchPostsIsLoading = () => {
+export const fetchPostsIsLoading = bool => {
   return {
-    type: POSTS_IS_LOADING
+    type: POSTS_IS_LOADING,
+    payload: bool
   };
 };
 export const fetchPostsSuccess = posts => {
@@ -23,19 +20,17 @@ export const fetchPostsError = msg => {
 };
 export const fetchPosts = () => dispatch => {
   dispatch(fetchPostsIsLoading(true));
-  fetch('https://jsonplaceholder.typicode.com/posts')
+  return fetch("https://jsonplaceholder.typicode.com/posts")
     .then(res => {
+      dispatch(fetchPostsIsLoading(false));
       if (!res.ok) {
-        dispatch(fetchPostsIsLoading(false));
         throw new Error(res.statusText);
       }
-      dispatch(fetchPostsIsLoading(false));
       return res;
     })
     .then(res => res.json())
     .then(res => dispatch(fetchPostsSuccess(res)))
     .catch(err => {
-      console.log(err.message);
       dispatch(fetchPostsError(err.message));
     });
 };

@@ -1,24 +1,24 @@
-import * as actions from './actions';
-import * as types from '../types/types';
+import * as actions from "./actions";
+import * as types from "../types/types";
 
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
-import fetchMock from 'fetch-mock';
-import expect from 'expect';
+import configureMockStore from "redux-mock-store";
+import thunk from "redux-thunk";
+import fetchMock from "fetch-mock";
+import expect from "expect";
 
 const middlewares = [thunk];
 // Creating fake store
 const mockStore = configureMockStore(middlewares);
 
-describe('Testing actions', () => {
-  describe('Testing sync actions', () => {
-    it('fetchPostsIsLoading', () => {
+describe("Testing actions", () => {
+  describe("Testing sync actions", () => {
+    it("fetchPostsIsLoading", () => {
       const action = {
         type: types.POSTS_IS_LOADING
       };
       expect(actions.fetchPostsIsLoading()).toEqual(action);
     });
-    it('fetchPostsSuccess', () => {
+    it("fetchPostsSuccess", () => {
       const action = {
         type: types.FETCH_POSTS_SUCCESS,
         payload: [1, 2, 3]
@@ -27,21 +27,22 @@ describe('Testing actions', () => {
     });
   });
 
-  describe('Testing async actions', () => {
+  describe("Testing async actions", () => {
     afterEach(() => {
       fetchMock.reset();
       fetchMock.restore();
     });
-    it('Creating FETCH_POSTS_SUCCESS', () => {
+    it("Creating FETCH_POSTS_SUCCESS", () => {
       // Creating fake response from the server
-      fetchMock.getOnce('https://jsonplaceholder.typicode.com/posts', {
+      fetchMock.getOnce("https://jsonplaceholder.typicode.com/posts", {
         headers: {
-          'content-type': 'application/json'
+          "content-type": "application/json"
         },
-        body: { posts: [1, 2, 3], status: 'ok' }
+        body: [1, 2, 3]
       });
       const expectedActions = [
-        { type: types.POSTS_IS_LOADING },
+        { type: types.POSTS_IS_LOADING, payload: true },
+        { type: types.POSTS_IS_LOADING, payload: false },
         { type: types.FETCH_POSTS_SUCCESS, payload: [1, 2, 3] }
       ];
 
